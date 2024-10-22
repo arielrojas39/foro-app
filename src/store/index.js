@@ -31,11 +31,11 @@ export default new Vuex.Store({
         commit('setError', error.mesagge)
         throw error;
       }
+    },
+    async logout({commit}){
+      await auth.signOut();
+      commit('setUser', null)
     }
-  },
-
-  async logout({commit}){
-    await auth.signOut();
-    commit('setUser', null)
   }
+
 })
