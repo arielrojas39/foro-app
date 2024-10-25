@@ -2,7 +2,7 @@
     <div class="register-container">
       <div class="form-content">
         <h1>Registro</h1>
-        <form @submit.prevent="registrarUsuario">
+        <form @submit.prevent="registrarUsuario" class="form-wrapper">
           <input v-model="email" type="email" placeholder="Correo" required class="input-field" />
           <input v-model="pass" type="password" placeholder="Contraseña" required class="input-field" />
   
@@ -90,30 +90,39 @@ export default {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f0f2f5;
+    background-image: url('../img/background.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
   }
-  
+  .form-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+  }
   .form-content {
-    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap:10px;
     padding: 40px;
     border-radius: 10px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
     text-align: center;
     width: 400px;
+    backdrop-filter: blur(10px);
+    box-shadow: 40px 40px 40px rgba(0, 0, 0, 0.85);
   }
   
   h1 {
     font-size: 2.2rem;
-    color: #333;
+    color: #ccc;
     margin-bottom: 20px;
   }
   
   .input-field {
     width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 50px;
     font-size: 1rem;
     box-sizing: border-box;
   }
@@ -125,17 +134,14 @@ export default {
   
   .file-label {
     display: block;
-    margin: 10px 0;
-    background-color: #4CAF50;
+    background: radial-gradient(circle, #2575a0, #0d2c3d);
     color: white;
-    padding: 12px;
-    border-radius: 5px;
+    padding: 10px 20px;
+    border-radius: 50px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-  }
-  
-  .file-label:hover {
-    background-color: #45a049;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
   }
   
   .input-file {
@@ -152,18 +158,21 @@ export default {
   
   .register-button {
     width: 100%;
-    padding: 15px;
-    background-color: #2196F3;
+    padding: 10px 20px;
+    background: radial-gradient(circle, #2575a0, #0d2c3d);
     color: white;
     font-size: 1.2rem;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    border-radius: 50px;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
   }
   
-  .register-button:hover {
-    background-color: #1e88e5;
+  .register-button:hover,  .file-label:hover{
+    background: radial-gradient(circle, #0d81c5, #091e2a);
+    transform: scale(1.05);
   }
   
   .error-message {

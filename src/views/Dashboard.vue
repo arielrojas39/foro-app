@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <div v-if="isAdmin" class="profile-list">
+    <!-- <div v-if="isAdmin" class="profile-list">
       <h1>Perfiles de usuarios</h1>
       <div class="user-cards-container">
         <div v-for="user in allUsers" :key="user.id" class="user-card">
@@ -12,13 +12,14 @@
           <p><strong>Direccion:</strong> {{ user.address }}</p>
         </div>
       </div>
-    </div>
+    </div> -->
 
     
-    <div v-else-if="userData" class="profile-card">
+    <div v-if="userData" class="profile-card">
       <h1>¡Bienvenido, {{userData.firstName}}!</h1>
       <div class="profile-container">
-        
+        <!-- COMENZAMOS A INTENTAR COLOCAR UN COMPONENTE EN UNA VISTA!!! -->
+        <Post></Post>
         <!-- <h1>Perfil de usuario</h1>
         <img :src="userData.photoURL" class="profile-image" />
         <p><strong>Correo:</strong> {{ userData.email }}</p>
@@ -27,6 +28,8 @@
         <section class="threads-container">
 
           <div class="box-threads">
+            <!-- <router-link to="/posts">Posts</router-link> -->
+
             <img :src="userData.photoURL" class="profile-image" />
             <input class="box-input" type="text" placeholder="Comienza un debate...">
           </div>
@@ -43,7 +46,7 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import {db} from '../firebase'
-
+import Post from "../components/Post.vue";
 export default {
   name: "Dashboard",
   data() {
@@ -52,6 +55,9 @@ export default {
         allUsers: [],
         isAdmin: false,
     }
+  },
+  components:{
+    Post,
   },
 
   computed: {
@@ -110,7 +116,10 @@ export default {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: radial-gradient(circle, #26133e, #0d031a);
+    background-image: url('../img/background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
   }
   .threads-container{
     width: 600px;

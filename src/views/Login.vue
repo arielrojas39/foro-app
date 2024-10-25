@@ -57,21 +57,24 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f0f2f5;
+    background-image: url('../img/background.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
   }
   
   .form-content {
-    background: #fff;
+    backdrop-filter: blur(10px);
     padding: 40px;
     border-radius: 10px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
     text-align: center;
     width: 400px;
+    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.85);
   }
   
   h1 {
     font-size: 2.2rem;
-    color: #333;
+    color: #ccc;
     margin-bottom: 20px;
   }
   
@@ -93,17 +96,18 @@
   .login-button {
     width: 100%;
     padding: 15px;
-    background-color: #4CAF50;
-    color: white;
+    background: radial-gradient(circle, #2575a0, #0d2c3d);
     font-size: 1.2rem;
     border: none;
-    border-radius: 5px;
+    border-radius: 20px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    color: #ccc;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
   }
   
   .login-button:hover {
-    background-color: #45a049;
+    background: radial-gradient(circle, #0d81c5, #091e2a);
+    transform: scale(1.05);
   }
   
   .error-message {
