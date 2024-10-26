@@ -18,22 +18,16 @@
     <div v-if="userData" class="profile-card">
       <h1>¡Bienvenido, {{userData.firstName}}!</h1>
       <div class="profile-container">
-        <!-- COMENZAMOS A INTENTAR COLOCAR UN COMPONENTE EN UNA VISTA!!! -->
-        <Post></Post>
+
         <!-- <h1>Perfil de usuario</h1>
         <img :src="userData.photoURL" class="profile-image" />
         <p><strong>Correo:</strong> {{ userData.email }}</p>
         <p><strong>Nombre:</strong> {{ userData.firstName }} {{ userData.lastName }}</p>
         <p><strong>Direccion:</strong> {{ userData.address }}</p> -->
+
         <section class="threads-container">
-
-          <div class="box-threads">
-            <!-- <router-link to="/posts">Posts</router-link> -->
-
-            <img :src="userData.photoURL" class="profile-image" />
-            <input class="box-input" type="text" placeholder="Comienza un debate...">
-          </div>
-
+          <!-- <img :src="userData.photoURL" class="profile-image" /> -->
+          <Post></Post> 
         </section>
 
         
@@ -122,19 +116,16 @@ export default {
     background-position: center;
   }
   .threads-container{
+    display: flex;
+    flex-direction: column;
     width: 600px;
-    height: 400px;
+    min-height: 400px;
     background-color: rgba(0, 0, 0, 0.25);
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.75);
     padding: 20px;
     border-radius: 20px;
   }
-  .box-threads{
-    width: 100%;
-    height: 60px;
-    display: flex;
-    gap:30px;
-  }
+ 
   .box-input{
     width: 100%;
     background-color: transparent;

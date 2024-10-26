@@ -1,77 +1,131 @@
 <template>
-    <div class="wrapper-post">
+  <div class="container">
+
+    <form @submit.prevent="addOrUpdateDebate" class="new-post">
+      <div class="image"></div>
+      <div class="input-group">
+        <input class="input" type="text" v-model="debateForm.title" placeholder="Título" required>
+        <input class="input" v-model="debateForm.content" placeholder="Contenido" required>
+      </div>
+      <button class="button" type="submit">{{ debateForm.id ? 'Actualizar' : 'Crear' }} Debate</button>
+    </form>
+
+    <div v-for="debate in debates" :key="debate.id" class="post-group">
       <div class="text-group">
-        <h2>{{ post.title }}</h2>
-        <p>{{ post.content }}</p>
+        <h3>{{ debate.title }}</h3>
+        <p>{{ debate.content }}</p>
       </div>
 
-      <div class="button-group">
-
-        <button class="button" @click="editPost">
-          Editar
-        </button>
-          
-        <button class="button" @click="deletePost">
-          Eliminar
-        </button>
-
-      </div>
+    <div class="button-group">
+      <button @click="editDebate(debate)">Modificar</button>
+      <button @click="deleteDebate(debate.id)">Eliminar</button>
     </div>
+
+    </div>
+
+  </div>
 </template>
-  
+
 <script>
-  export default {
-    props: ['post'],
-    methods: {
-      editPost() {
-        this.$emit('edit-post', this.post);
-      },
-      deletePost() {
-        this.$emit('delete-post', this.post.id);
+export default {
+  data() {
+    return {
+      userData:null,
+      debates: [],
+      debateForm: {
+        id: null,
+        title: '',
+        content: ''
       }
+    };
+  },
+  methods: {
+    addOrUpdateDebate() {
+      if (this.debateForm.id) {
+        const index = this.debates.findIndex(d => d.id === this.debateForm.id);
+        this.$set(this.debates, index, { ...this.debateForm });
+      } else {
+        this.debateForm.id = Date.now();
+        this.debates.push({ ...this.debateForm });
+      }
+      this.resetForm();
+    },
+    editDebate(debate) {
+      this.debateForm = { ...debate };
+    },
+    deleteDebate(id) {
+      this.debates = this.debates.filter(d => d.id !== id);
+    },
+    resetForm() {
+      this.debateForm = { id: null, title: '', content: '' };
     }
   }
+};
 </script>
 
 <style scoped>
-  .wrapper-post{
-    display: flex;
-    flex-direction: row;
-    gap:20px;
-    justify-content: space-between;
-    align-items: center;
-    background: radial-gradient(circle, #4f3372, #32125c);
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.8);
-    width: 550px;
-    min-height: auto;
-    border-radius: 10px;
-    padding:25px;
-    color:#ccc;
-  }
-  .text-group{
-    display: flex;
-    flex-direction: column;
-    color:#ccc;
-    justify-content: start;
-    align-items: start;
-    gap:20px;
-  }
-  p{
-    text-align: left;
-  }
-  .button-group{
-    display: flex;
-    flex-direction: row;
-    gap:10px;
-  }
-  .button{
-    width: 80px;
-    height: 30px;
-    border:none;
-    border-radius: 50px;
-    color: #ccc;
-    background: radial-gradient(circle, #3c235a, #20093e);
-    cursor: pointer;
-  }
+.container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
+form.new-post{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.image{
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: aqua;
+}
+
+.input-group{
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  gap:5px;
+}
+
+.input{
+  padding: 5px;
+  border:none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  border: none;
+  outline: none;
+}
+
+.button{
+  width: 150px;
+  height: 40px;
+  border: none;
+  border-radius: 20px;
+}
+
+.post-group{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  gap: 10px;
+  width: 600px;;
+  background: red;
+}
+
+.text-group{
+  display: flex;
+  flex-direction: column;
+}
+
+.button-group{
+  display: flex;
+  flex-direction: row;
+}
 </style>
