@@ -14,10 +14,13 @@
       </div>
     </div> -->
 
-    
-    <div v-if="userData" class="profile-card">
+    <!-- <div class="profile-wrapper">
       <h1>¡Bienvenido, {{userData.firstName}}!</h1>
-      <div class="profile-container">
+      <button @click="manejarLogout" class="logout-button">Cerrar sesion</button>
+    </div> -->
+
+
+    <div v-if="userData">
 
         <!-- <h1>Perfil de usuario</h1>
         <img :src="userData.photoURL" class="profile-image" />
@@ -30,9 +33,6 @@
           <Post></Post> 
         </section>
 
-        
-        <!-- <button @click="manejarLogout" class="logout-button">Cerrar sesion</button> -->
-      </div>
     </div>
   </div>
 </template>
@@ -41,6 +41,7 @@
 import { mapActions, mapGetters } from "vuex";
 import {db} from '../firebase'
 import Post from "../components/Post.vue";
+
 export default {
   name: "Dashboard",
   data() {
@@ -106,24 +107,36 @@ export default {
 
 <style scoped>
  .dashboard-container {
+    position: static;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     background-image: url('../img/background.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    background-attachment: fixed;
   }
+
   .threads-container{
+    position: sticky;
     display: flex;
     flex-direction: column;
     width: 600px;
-    min-height: 400px;
-    background-color: rgba(0, 0, 0, 0.25);
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.75);
-    padding: 20px;
+    height: 100vh;
+    backdrop-filter: blur(5px);
+    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.85);
+    padding:  20px  0px;
     border-radius: 20px;
+    box-sizing: border-box;
+    background-attachment: fixed;
+  }
+
+  .profile-wrapper{
+    width: 300px;
+    height: 150px;
+    background-color: red;  
   }
  
   .box-input{
@@ -133,6 +146,7 @@ export default {
     color:#ccc;
     outline: none;
   }
+  
   .profile-image {
     width: 50px;
     height: 50px;
@@ -140,6 +154,7 @@ export default {
     object-fit: cover;
     margin:5px;
   }
+
   .profile-list {
     background: #fff;
     padding: 40px;
