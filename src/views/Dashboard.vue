@@ -1,5 +1,9 @@
 <template>
   <div class="dashboard-container">
+
+
+    <!-- INTERFAZ ADMINISTRADOR -->
+
     <!-- <div v-if="isAdmin" class="profile-list">
       <h1>Perfiles de usuarios</h1>
       <div class="user-cards-container">
@@ -19,21 +23,46 @@
       <button @click="manejarLogout" class="logout-button">Cerrar sesion</button>
     </div> -->
 
+    <!-- <div v-if="userData"> -->
+      <!-- <h1>Perfil de usuario</h1>
+      <img :src="userData.photoURL" class="profile-image" />
+      <p><strong>Correo:</strong> {{ userData.email }}</p>
+      <p><strong>Nombre:</strong> {{ userData.firstName }} {{ userData.lastName }}</p>
+      <p><strong>Direccion:</strong> {{ userData.address }}</p> -->
+    <!-- </div> -->
 
-    <div v-if="userData">
 
-        <!-- <h1>Perfil de usuario</h1>
-        <img :src="userData.photoURL" class="profile-image" />
-        <p><strong>Correo:</strong> {{ userData.email }}</p>
-        <p><strong>Nombre:</strong> {{ userData.firstName }} {{ userData.lastName }}</p>
-        <p><strong>Direccion:</strong> {{ userData.address }}</p> -->
+
+    <!-- INTERFAZ USUARIO -->
+
+    <!-- <h1>¡Bienvenido, {{userData.firstName}}!</h1>
+    <img :src="userData.photoURL" class="profile-image" />
+    <p><strong></strong> {{ userData.firstName }} {{ userData.lastName }}</p>
+    <button @click="manejarLogout" class="logout-button">Cerrar sesion</button> -->
+    
+    
+      <div class="navegation">
+
+        <div class="home-icon">
+          <img src="../img/icons/home.png" alt="">
+        </div>
+
+        <div class="profile-icon">
+          <img src="../img/icons/profile.png" alt="">
+        </div>
+
+      </div>
+
+      <div class="main">
 
         <section class="threads-container">
-          <!-- <img :src="userData.photoURL" class="profile-image" /> -->
-          <Post></Post> 
+          <!-- <img :src="userData.photoURL" class="profile-image" /> -->    
+          <Post :userData="userData"/>
         </section>
+      </div>
 
-    </div>
+      <div class="void"></div>
+
   </div>
 </template>
 
@@ -41,14 +70,15 @@
 import { mapActions, mapGetters } from "vuex";
 import {db} from '../firebase'
 import Post from "../components/Post.vue";
+import Button from "@/components/Button.vue";
 
 export default {
   name: "Dashboard",
   data() {
     return{
         userData: null,
-        allUsers: [],
-        isAdmin: false,
+        // allUsers: [],
+        // isAdmin: false,
     }
   },
   components:{
@@ -103,67 +133,81 @@ export default {
     }
   }
 };
+
 </script>
 
 <style scoped>
  .dashboard-container {
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 1.5fr;
+    grid-template-rows: 1fr;
+    grid-auto-columns: 1fr;
+    grid-template-areas:
+    "navegation main void";
+    gap: 10px;
+    grid-auto-flow: row;
     position: static;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-image: url('../img/background.jpg');
+    height: 100vh;
+    /*background-image: url('../img/background.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
+    background-attachment: fixed;*/
+    background-color: #000000;
+  }
+  
+  .navegation { 
+    grid-area: navegation; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: end;
+    gap:30px 0px;
+  }
+  
+  .void { 
+    grid-area: void; 
+  }
+  
+  .main { 
+    grid-area: main; 
+  }
+
+  img{
+    width: 50px;
+    height: 50px;
+  }
+
+  /* ESTILO A CHEQUEAR!! */
+
+  .card-profile { 
+    grid-area: card-profile; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    backdrop-filter: blur(5px);
+    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.85);
+    border-radius: 20px;
+    border:1px solid #ccc;
+    padding:20px;
   }
 
   .threads-container{
     position: sticky;
     display: flex;
     flex-direction: column;
-    width: 600px;
     height: 100vh;
     backdrop-filter: blur(5px);
     box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.85);
-    padding:  20px  0px;
-    border-radius: 20px;
     box-sizing: border-box;
     background-attachment: fixed;
+    border:1px solid #ccc;
+    border-top: none;
+    border-bottom: none;
+    padding-top:20px;
   }
 
-  .profile-wrapper{
-    width: 300px;
-    height: 150px;
-    background-color: red;  
-  }
- 
-  .box-input{
-    width: 100%;
-    background-color: transparent;
-    border: none;
-    color:#ccc;
-    outline: none;
-  }
-  
-  .profile-image {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin:5px;
-  }
-
-  .profile-list {
-    background: #fff;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 100%;
-  }
-  
   h1 {
     font-size: 2rem;
     color: #ccc;
@@ -176,27 +220,15 @@ export default {
     flex-wrap: wrap; 
   }
   
-  .user-card {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    padding: 20px;
-    margin: 10px;
-    width: 200px; 
-  }
-  
-  
   .logout-button {
     width: 100%;
     padding: 15px;
     background-color: #f44336;
     color: white;
-    font-size: 1.1rem;
+    font-size: 1rem;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 20px;
     transition: background-color 0.3s ease;
   }
   

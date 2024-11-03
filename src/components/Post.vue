@@ -2,12 +2,15 @@
   <div class="container">
 
     <form @submit.prevent="addOrUpdateDebate" class="new-post">
-      <div class="image"></div>
-      <div class="input-group">
-        <input class="input" type="text" v-model="debateForm.title" placeholder="Título" required>
-        <input class="input" v-model="debateForm.content" placeholder="Contenido" required>
+      <div class="post-group">  
+        <img :src="userData.photoURL" class="profile-image" />
+        <textarea class="input" v-model="debateForm.content" placeholder="¡Comienza un nuevo debate!" required></textarea>
       </div>
-      <button class="button" type="submit">{{ debateForm.id ? 'Actualizar' : 'Crear' }} Debate</button>
+
+      <div class="button-container"> 
+        <ButtonComponent :text="'Postear'"/>
+      </div>
+      
     </form>
 
     <div v-for="debate in debates" :key="debate.id" class="list-container">
@@ -17,7 +20,6 @@
         <div class="image"></div>
 
         <div class="text-content">
-          <h3>{{ debate.title }}</h3>
           <p>{{ debate.content }}</p>
         </div>
 
@@ -42,6 +44,7 @@
 
 <script>
 import Coment from './Coment.vue';
+import ButtonComponent from './Button.vue';
 
 export default {
   data() {
@@ -55,8 +58,15 @@ export default {
       }
     };
   },
+  props:{
+    userData: {
+      type: Object,
+      required: true
+    }
+  },
   components:{
     Coment,
+    ButtonComponent,
   },
   methods: {
     addOrUpdateDebate() {
@@ -76,7 +86,15 @@ export default {
       this.debates = this.debates.filter(d => d.id !== id);
     },
     resetForm() {
-      this.debateForm = { id: null, title: '', content: '' };
+      this.debateForm = { id: null, content: '' };
+    },
+    autoResize() {
+      const textarea = this.$refs.textarea;
+      textarea.style.height = 'auto'; // Resetea la altura
+      textarea.style.height = `${textarea.scrollHeight}px`; // Ajusta la altura al contenido
+    },
+    mounted() {
+      this.autoResize(); // Ajusta la altura inicial si hay contenido preexistente
     }
   }
 };
@@ -88,16 +106,30 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap:20px;
+  gap:10px;
 }
 
-form.new-post{
+.new-post{
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
   gap: 10px;
-  width: 550px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.input{
+  border:none;
+  outline: none;
+  background-color: transparent;
+  color:#ccc;
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  box-sizing: border-box;
+  resize: none; 
+  overflow: hidden; 
 }
 
 hr.full-width{
@@ -106,12 +138,11 @@ hr.full-width{
   box-sizing: border-box;
 }
 
-
-.image{
-  width: 60px;
-  height: 60px;
+img.profile-image{
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  background-color: aqua;
+  margin-left:20px;  
 }
 
 .input-group{
@@ -121,28 +152,23 @@ hr.full-width{
   gap:5px;
 }
 
-.input{
-  padding: 5px;
-  border:none;
-  border-radius: 20px;
-  padding: 10px 20px;
-  border: none;
-  outline: none;
-}
-
 .post-group{
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: start;
   align-items: center;
-  gap: 10px;
+  gap: 30px;
   width: 100%;
 }
-
+.input::placeholder{
+  font-size: 15px;
+  color:grey;
+}
 .list-container{
   display: flex;
   flex-direction: column;
   gap:20px;
+  width: 100%;
 }
 
 .profile-text-content{
@@ -169,6 +195,13 @@ hr.full-width{
   justify-content: center;
   align-items: center;
   gap:5px;
+}
+.button-container{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+  padding: 0px 20px;
 }
 
 .button{
