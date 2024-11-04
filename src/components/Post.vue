@@ -1,19 +1,20 @@
 <template>
   <div class="container">
 
-    <form @submit.prevent="addOrUpdateDebate" class="new-post">
+    <form @submit.prevent="submitPost" class="new-post">
       <div class="post-group">  
         <img :src="userData.photoURL" class="profile-image" />
-        <textarea class="input" v-model="debateForm.content" placeholder="¡Comienza un nuevo debate!" required></textarea>
+        <textarea class="input" v-model="postContent" placeholder="¡Comienza un nuevo debate!" required></textarea>
       </div>
 
       <div class="button-container"> 
-        <ButtonComponent :text="'Postear'"/>
+        <ButtonComponent type="submit" :text="'Postear'"/>
+        <!-- <button type="submit" class="button">Postear</button> -->
       </div>
       
     </form>
 
-    <div v-for="debate in debates" :key="debate.id" class="list-container">
+    <!-- <div v-for="debate in debates" :key="debate.id" class="list-container">
       <hr class="full-width">
       <div class="post-group">
       <div class="profile-text-content">
@@ -31,10 +32,8 @@
         <button class="button" @click="deleteDebate(debate.id)">Eliminar</button>
       </div>
       
-      <!-- <Coment></Coment> -->
-      <!-- <hr class="full-width"> -->
     </div>
-    </div>
+    </div> -->
 
 
 
@@ -45,17 +44,19 @@
 <script>
 import Coment from './Coment.vue';
 import ButtonComponent from './Button.vue';
+import { mapActions } from 'vuex';
 
 export default {
   data() {
     return {
       userData:null,
-      debates: [],
-      debateForm: {
-        id: null,
-        title: '',
-        content: ''
-      }
+      postContent: '',
+      // debates: [],
+      // debateForm: {
+      //   id: null,
+      //   title: '',
+      //   content: ''
+      // }
     };
   },
   props:{
@@ -68,36 +69,60 @@ export default {
     Coment,
     ButtonComponent,
   },
+  // computed: {
+  //       ...mapGetters(['error'])
+  // },
   methods: {
-    addOrUpdateDebate() {
-      if (this.debateForm.id) {
-        const index = this.debates.findIndex(d => d.id === this.debateForm.id);
-        this.$set(this.debates, index, { ...this.debateForm });
-      } else {
-        this.debateForm.id = Date.now();
-        this.debates.push({ ...this.debateForm });
+
+    ...mapActions(['createPost']),
+    
+    // addOrUpdateDebate() {
+    //   if (this.debateForm.id) {
+    //     const index = this.debates.findIndex(d => d.id === this.debateForm.id);
+    //     this.$set(this.debates, index, { ...this.debateForm });
+    //   } else {
+    //     this.debateForm.id = Date.now();
+    //     this.debates.push({ ...this.debateForm });
+    //   }
+    //   this.resetForm();
+    // },
+
+    // editDebate(debate) {
+    //   this.debateForm = { ...debate };
+    // },
+
+    // deleteDebate(id) {
+    //   this.debates = this.debates.filter(d => d.id !== id);
+    // },
+
+    // resetForm() {
+    //   this.debateForm = { id: null, content: '' };
+    // },
+
+    // autoResize() {
+    //   const textarea = this.$refs.textarea;
+    //   textarea.style.height = 'auto'; // Resetea la altura
+    //   textarea.style.height = `${textarea.scrollHeight}px`; // Ajusta la altura al contenido
+    // },
+
+    // mounted() {
+    //   this.autoResize(); // Ajusta la altura inicial si hay contenido preexistente
+    // },
+    
+
+     async submitPost() {
+      try {
+        await this.createPost({ postContent: this.postContent });
+        console.log('estamos dentro de submitPost en component/post.vue' + this.postContent)
+        this.postContent = ''; // Limpiar el contenido después de publicar
+      } catch (error) {
+        console.error("Error al crear el post:", error);
       }
-      this.resetForm();
-    },
-    editDebate(debate) {
-      this.debateForm = { ...debate };
-    },
-    deleteDebate(id) {
-      this.debates = this.debates.filter(d => d.id !== id);
-    },
-    resetForm() {
-      this.debateForm = { id: null, content: '' };
-    },
-    autoResize() {
-      const textarea = this.$refs.textarea;
-      textarea.style.height = 'auto'; // Resetea la altura
-      textarea.style.height = `${textarea.scrollHeight}px`; // Ajusta la altura al contenido
-    },
-    mounted() {
-      this.autoResize(); // Ajusta la altura inicial si hay contenido preexistente
     }
   }
+
 };
+
 </script>
 
 <style scoped>
