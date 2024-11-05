@@ -50,7 +50,6 @@ export default {
      async submitPost() {
       try {
         await this.createPost({ postContent: this.postContent });
-        console.log('estamos dentro de submitPost en component/post.vue' + this.postContent)
         this.postContent = ''; // Limpiar el contenido después de publicar
       } catch (error) {
         console.error("Error al crear el post:", error);
@@ -96,7 +95,7 @@ export default {
 
 hr.full-width{
   width: 100%;
-  border: 1px solid #ccc; /* Podés ajustar el estilo de la línea aquí */
+  border: 1px solid #8887878f; /* Podés ajustar el estilo de la línea aquí */
   box-sizing: border-box;
 }
 

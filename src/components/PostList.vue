@@ -14,64 +14,67 @@
                     <p class="content">{{ post.content }}</p> 
                 </div>
             </div>
-            <hr>
+            <hr class="separator">
         </li>
       </ul>
     </div>
   </template>
   
   <script>
-  import { db } from '@/firebase';
+  // import { db } from '@/firebase';
   import { mapState, mapActions } from 'vuex';
   
   export default {
-    data() {
-      return {
-        posts: []
-      };
-    },
+    // data() {
+    //   return {
+    //     posts: []
+    //   };
+    // },
     computed:{
         ...mapState(['posts'])
     },
-    async created() {
-      await this.fetchPosts();
+    // async created() {
+    //   await this.fetchPosts();
+    // },
+    created() {
+      this.fetchPosts();
     },
     methods: {
         ...mapActions(['fetchPosts']),
-        async fetchPosts() {
-            try { 
-                const postsSnapshot = await db.collection('posts').get(); 
-                const postsArray = []; 
-                for (const doc of postsSnapshot.docs) {
-                    const postData = doc.data(); 
-                    const userId = postData.idUser; 
-                    const date = postData.createdAt
+        // async fetchPosts() {
+        //     try { 
+        //         const postsSnapshot = await db.collection('posts').get(); 
+        //         const postsArray = []; 
+        //         for (const doc of postsSnapshot.docs) {
+        //             const postData = doc.data(); 
+        //             const userId = postData.idUser; 
+        //             const date = postData.createdAt
                     
-                    const userDoc = await db.collection('users').doc(userId).get(); 
-                    if (userDoc.exists) {
-                        const userData = userDoc.data(); 
-                        postsArray.push({
-                            id: doc.id, 
-                            content: postData.content, 
-                            date: date, 
-                            user: {
-                                firstName: userData.firstName, 
-                                lastName: userData.lastName, 
-                                email: userData.email, 
-                                photoURL: userData.photoURL 
-                            } 
-                        }); 
+        //             const userDoc = await db.collection('users').doc(userId).get(); 
+        //             if (userDoc.exists) {
+        //                 const userData = userDoc.data(); 
+        //                 postsArray.push({
+        //                     id: doc.id, 
+        //                     content: postData.content, 
+        //                     date: date, 
+        //                     user: {
+        //                         firstName: userData.firstName, 
+        //                         lastName: userData.lastName, 
+        //                         email: userData.email, 
+        //                         photoURL: userData.photoURL 
+        //                     } 
+        //                 }); 
                     
-                    }else {
-                        console.error(`No se encontró el usuario con ID: ${userId}`); 
-                    }
-                    this.posts = postsArray; 
-                    console.log()
-                }
-            }catch (error) {
-            console.error("Error al obtener los posts:", error);
-            }
-        }
+        //             }else {
+        //                 console.error(`No se encontró el usuario con ID: ${userId}`); 
+        //             }
+        //             this.posts = postsArray; 
+        //             console.log()
+        //         }
+        //     }catch (error) {
+        //     console.error("Error al obtener los posts:", error);
+        //     }
+        // }
     }
   };
   </script>
@@ -80,7 +83,7 @@
    .container{
     flex: 1; 
     overflow-y: auto; 
-    border:1px solid #ccc;
+    border:1px solid #8887878f;
     border-top: none;
     border-bottom: none;
     /* Oculta la barra de desplazamiento */ 
@@ -123,6 +126,9 @@
   .content{
     text-align: start;
     color: white;
+  }
+  hr.separator{
+    color: 8887878f;
   }
   
 </style>

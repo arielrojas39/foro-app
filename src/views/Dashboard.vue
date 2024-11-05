@@ -173,7 +173,7 @@ export default {
     grid-area: main; 
     flex: 1; 
     overflow-y: auto; 
-    border:1px solid #ccc;
+    border:1px solid #8887878f;
     border-top: none;
     border-bottom: none;
     /* Oculta la barra de desplazamiento */ 

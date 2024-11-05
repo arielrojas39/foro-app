@@ -22,11 +22,11 @@ export default new Vuex.Store({
     setUser(state, user) {
       state.user = user
     },
+    setPosts(state, post){
+      state.posts = post;
+    },
     addPost(state, post) {
       state.posts.push(post);
-    },
-    setPost(state, post){
-      state.posts = post;
     },
     setError(state, error) {
       state.error = error
@@ -77,9 +77,6 @@ export default new Vuex.Store({
 
     async createPost({ commit }, { postContent }) {
       try {
-        //intentamos ver que valor contiene el docref
-        console.log('entramos a la funcion createPost');
-        
         const user = auth.currentUser;
   
         if (!user) {
@@ -98,20 +95,36 @@ export default new Vuex.Store({
         commit('addPost', { id: docRef.id, ...newPost });
       } catch (error) {
         commit('setError', error.message);
-        console.log("ha ocurrido un error inesperado!")
       }
     },
-    fetchPosts({ commit}){
-      db.collection('posts'.onSnapshot(snapshot =>{
+    fetchPosts({ commit }){
+      db.collection('posts').onSnapshot( async snapshot =>{
         const postsArray = [];
-        snapshot.forEach(doc => {
-          postsArray.push({ id: doc.id, ...doc.data()});
-        });
-        commit('setPosts', postsArray)
-      }))
+        for(const doc of snapshot.docs){
+          const postData = doc.data();
+          const userId = postData.idUser;
+          const userDoc = await db.collection('users').doc(userId).get();
+          const userData = userDoc.data();
+
+          postsArray.push({
+            id: doc.id,
+            ...postData,
+            user:{
+              firstName: userData.firstName,
+              lastName: userData.lastName,
+              email: userData.email,
+              photoURL: userData.photoURL
+            }
+          });
+        
+        }
+        commit('setPosts', postsArray);
+        console.log('Guardamos la informacion en la base de datos!!')
+      },error =>{ 
+        commit('setError',error.message);
+      });
     }
   }
-
 })
 
 
