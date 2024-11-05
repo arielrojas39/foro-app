@@ -57,8 +57,12 @@
 
         <section class="threads-container">
           <!-- <img :src="userData.photoURL" class="profile-image" /> -->    
-          <Post :userData="userData"/>
+          <NewPost :userData="userData"/>      
         </section>
+
+        <div class="post-list">
+          <PostList/>
+        </div>
       </div>
 
       <div class="void"></div>
@@ -69,8 +73,8 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import {db} from '../firebase'
-import Post from "../components/Post.vue";
-import Button from "@/components/Button.vue";
+import NewPost from "../components/NewPost.vue";
+import PostList from "@/components/PostList.vue";
 
 export default {
   name: "Dashboard",
@@ -82,7 +86,8 @@ export default {
     }
   },
   components:{
-    Post,
+    NewPost,
+    PostList
   },
 
   computed: {
@@ -148,11 +153,6 @@ export default {
     grid-auto-flow: row;
     position: static;
     height: 100vh;
-    /*background-image: url('../img/background.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;*/
     background-color: #000000;
   }
   
@@ -171,41 +171,19 @@ export default {
   
   .main { 
     grid-area: main; 
+    flex: 1; 
+    overflow-y: auto; 
+    border:1px solid #ccc;
+    border-top: none;
+    border-bottom: none;
+    /* Oculta la barra de desplazamiento */ 
+    scrollbar-width: none; /* Firefox */ 
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
   }
 
   img{
     width: 50px;
     height: 50px;
-  }
-
-  /* ESTILO A CHEQUEAR!! */
-
-  .card-profile { 
-    grid-area: card-profile; 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    backdrop-filter: blur(5px);
-    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.85);
-    border-radius: 20px;
-    border:1px solid #ccc;
-    padding:20px;
-  }
-
-  .threads-container{
-    position: sticky;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    backdrop-filter: blur(5px);
-    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.85);
-    box-sizing: border-box;
-    background-attachment: fixed;
-    border:1px solid #ccc;
-    border-top: none;
-    border-bottom: none;
-    padding-top:20px;
   }
 
   h1 {

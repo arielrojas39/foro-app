@@ -9,9 +9,7 @@ export default new Vuex.Store({
   state: {
     user: null,
     error: null,
-    // posts: null,
     posts: [],
-    // error: null,
   },
 
   getters: {
@@ -26,6 +24,9 @@ export default new Vuex.Store({
     },
     addPost(state, post) {
       state.posts.push(post);
+    },
+    setPost(state, post){
+      state.posts = post;
     },
     setError(state, error) {
       state.error = error
@@ -99,6 +100,15 @@ export default new Vuex.Store({
         commit('setError', error.message);
         console.log("ha ocurrido un error inesperado!")
       }
+    },
+    fetchPosts({ commit}){
+      db.collection('posts'.onSnapshot(snapshot =>{
+        const postsArray = [];
+        snapshot.forEach(doc => {
+          postsArray.push({ id: doc.id, ...doc.data()});
+        });
+        commit('setPosts', postsArray)
+      }))
     }
   }
 

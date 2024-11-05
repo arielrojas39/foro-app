@@ -9,35 +9,12 @@
 
       <div class="button-container"> 
         <ButtonComponent type="submit" :text="'Postear'"/>
-        <!-- <button type="submit" class="button">Postear</button> -->
       </div>
       
     </form>
 
-    <!-- <div v-for="debate in debates" :key="debate.id" class="list-container">
-      <hr class="full-width">
-      <div class="post-group">
-      <div class="profile-text-content">
-        <div class="image"></div>
-
-        <div class="text-content">
-          <p>{{ debate.content }}</p>
-        </div>
-
-        
-      </div>
-      
-      <div class="button-group">
-        <button class="button" @click="editDebate(debate)">Modificar</button>
-        <button class="button" @click="deleteDebate(debate.id)">Eliminar</button>
-      </div>
-      
-    </div>
-    </div> -->
-
-
-
     <hr class="full-width">
+    
   </div>
 </template>
 
@@ -51,65 +28,25 @@ export default {
     return {
       userData:null,
       postContent: '',
-      // debates: [],
-      // debateForm: {
-      //   id: null,
-      //   title: '',
-      //   content: ''
-      // }
     };
   },
+
   props:{
     userData: {
       type: Object,
       required: true
     }
   },
+
   components:{
     Coment,
     ButtonComponent,
   },
-  // computed: {
-  //       ...mapGetters(['error'])
-  // },
+
   methods: {
 
     ...mapActions(['createPost']),
-    
-    // addOrUpdateDebate() {
-    //   if (this.debateForm.id) {
-    //     const index = this.debates.findIndex(d => d.id === this.debateForm.id);
-    //     this.$set(this.debates, index, { ...this.debateForm });
-    //   } else {
-    //     this.debateForm.id = Date.now();
-    //     this.debates.push({ ...this.debateForm });
-    //   }
-    //   this.resetForm();
-    // },
-
-    // editDebate(debate) {
-    //   this.debateForm = { ...debate };
-    // },
-
-    // deleteDebate(id) {
-    //   this.debates = this.debates.filter(d => d.id !== id);
-    // },
-
-    // resetForm() {
-    //   this.debateForm = { id: null, content: '' };
-    // },
-
-    // autoResize() {
-    //   const textarea = this.$refs.textarea;
-    //   textarea.style.height = 'auto'; // Resetea la altura
-    //   textarea.style.height = `${textarea.scrollHeight}px`; // Ajusta la altura al contenido
-    // },
-
-    // mounted() {
-    //   this.autoResize(); // Ajusta la altura inicial si hay contenido preexistente
-    // },
-    
-
+   
      async submitPost() {
       try {
         await this.createPost({ postContent: this.postContent });
@@ -164,7 +101,7 @@ hr.full-width{
 }
 
 img.profile-image{
-  width: 50px;
+  min-width: 50px;
   height: 50px;
   border-radius: 50%;
   margin-left:20px;  
@@ -184,6 +121,7 @@ img.profile-image{
   align-items: center;
   gap: 30px;
   width: 100%;
+  margin-top:20px;
 }
 .input::placeholder{
   font-size: 15px;
