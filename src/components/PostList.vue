@@ -128,7 +128,7 @@
     color: white;
   }
   hr.separator{
-    color: 8887878f;
+    border: 1px solid#8887878f;
   }
   
 </style>
