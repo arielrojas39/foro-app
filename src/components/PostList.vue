@@ -4,15 +4,32 @@
       <ul class="wrapper-list">
         <li v-for="post in posts" :key="post.id"> 
             <div class="post">
-                <img :src="post.user.photoURL" alt="Foto de perfil" /> 
-                <div class="info-post">
-                    <div class="user-data">
-                        <p class="full-name">{{ post.user.firstName }} {{ post.user.lastName }}</p> 
-                        <p class="email">{{ post.user.email }}</p> 
-                        <p>{{ post.date }}</p> 
-                    </div>
-                    <p class="content">{{ post.content }}</p> 
+
+              <div class="wrapper-info">
+
+                <div class="wrapper-img">
+                  <img :src="post.user.photoURL" alt="Foto de perfil" /> 
                 </div>
+  
+                <div class="wrapper-user-data">
+                  
+                      <div class="user-data">
+                          <p class="full-name">{{ post.user.firstName }} {{ post.user.lastName }}</p> 
+                          <p class="email">{{ post.user.email }}</p> 
+                          <p>{{ post.date }}</p> 
+                      </div>
+                      <p class="content">{{ post.content }}</p> 
+                      <!-- <Coment/> -->
+                  
+                </div>
+
+              </div>
+
+
+              <div class="wrapper-overflow">
+                <OverflowMenu @delete="deletePost(post.id)" @edit="editPost(post)"/>
+              </div>
+
             </div>
             <hr class="separator">
         </li>
@@ -23,58 +40,33 @@
   <script>
   // import { db } from '@/firebase';
   import { mapState, mapActions } from 'vuex';
+  import Coment from './Coment.vue';
+  import OverflowMenu from './OverflowMenu.vue';
   
   export default {
-    // data() {
-    //   return {
-    //     posts: []
-    //   };
-    // },
+    components:{
+      Coment,
+      OverflowMenu,
+    },
     computed:{
         ...mapState(['posts'])
     },
-    // async created() {
-    //   await this.fetchPosts();
-    // },
     created() {
       this.fetchPosts();
     },
     methods: {
         ...mapActions(['fetchPosts']),
-        // async fetchPosts() {
-        //     try { 
-        //         const postsSnapshot = await db.collection('posts').get(); 
-        //         const postsArray = []; 
-        //         for (const doc of postsSnapshot.docs) {
-        //             const postData = doc.data(); 
-        //             const userId = postData.idUser; 
-        //             const date = postData.createdAt
-                    
-        //             const userDoc = await db.collection('users').doc(userId).get(); 
-        //             if (userDoc.exists) {
-        //                 const userData = userDoc.data(); 
-        //                 postsArray.push({
-        //                     id: doc.id, 
-        //                     content: postData.content, 
-        //                     date: date, 
-        //                     user: {
-        //                         firstName: userData.firstName, 
-        //                         lastName: userData.lastName, 
-        //                         email: userData.email, 
-        //                         photoURL: userData.photoURL 
-        //                     } 
-        //                 }); 
-                    
-        //             }else {
-        //                 console.error(`No se encontró el usuario con ID: ${userId}`); 
-        //             }
-        //             this.posts = postsArray; 
-        //             console.log()
-        //         }
-        //     }catch (error) {
-        //     console.error("Error al obtener los posts:", error);
-        //     }
-        // }
+        async deletePost(postId) {
+          try{
+            await this.$store.dispatch('deletePost', postId);
+            console.log('el post ha sido eliminado');
+          }catch(error){
+            console.error('error eliminando el post: ',error);
+          }
+        },
+        editPost(){
+          console.log('modificamos la publicacion')
+        }
     }
   };
   </script>
@@ -95,21 +87,35 @@
     flex-direction: column;
   }
   img{
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
   }
  
   .post{
     display: flex;
     flex-direction: row;
-    gap:20px;
-    margin:20px 20px;
+    justify-content: space-between;
+    gap:10px;
+    margin:15px 20px;
   }
-  .info-post{
+  .wrapper-info{
+    display: flex;
+    flex-direction: row;
+    gap:10px;
+  }
+  .wrapper-user-data{
     display: flex;
     flex-direction: column;
-    gap:10px;
+    gap:5px;
+  }
+  .wrapper-overflow{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+  }
+  p{
+    font-size: 15px;
   }
   .user-data{
     display: flex;

@@ -6,7 +6,7 @@
         <img :src="userData.photoURL" class="profile-image" />
         <textarea class="input" v-model="postContent" placeholder="¡Comienza un nuevo debate!" required></textarea>
       </div>
-
+      
       <div class="button-container"> 
         <ButtonComponent type="submit" :text="'Postear'"/>
       </div>

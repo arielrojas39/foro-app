@@ -16,6 +16,7 @@ export default new Vuex.Store({
     isAuth: state => !!state.user,
     user: state => state.user,
     error: state => state.error,
+    posts: state => state.posts,
   },
 
   mutations: {
@@ -24,6 +25,9 @@ export default new Vuex.Store({
     },
     setPosts(state, post){
       state.posts = post;
+    },
+    removePost(state, postId){
+      state.posts = state.posts.filter(post => post.id !== postId)
     },
     addPost(state, post) {
       state.posts.push(post);
@@ -97,7 +101,7 @@ export default new Vuex.Store({
         commit('setError', error.message);
       }
     },
-    fetchPosts({ commit }){
+    async fetchPosts({ commit }){
       db.collection('posts').onSnapshot( async snapshot =>{
         const postsArray = [];
         for(const doc of snapshot.docs){
@@ -123,8 +127,12 @@ export default new Vuex.Store({
       },error =>{ 
         commit('setError',error.message);
       });
+    },
+    async deletePost({ commit }, postId){
+      await db.collection('posts').doc(postId).delete();
+      commit('removePost', postId)
     }
-  }
+  },
 })
 
 

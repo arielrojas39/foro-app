@@ -1,6 +1,6 @@
 <template>
     <div class="comment-section">
-      <h4>Comentarios</h4>
+
       <form @submit.prevent="addComment">
         <input class="input" v-model="commentText" placeholder="Escribir comentario" required>
         <button class="button" type="submit">Agregar Comentario</button>
