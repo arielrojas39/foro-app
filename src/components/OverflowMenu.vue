@@ -2,11 +2,16 @@
     <div class="overflow-menu" @click.stop>
       <button @click="toggleMenu" class="menu-icon">⋮</button>
       <div v-if="isOpen" class="menu-options">
+
         <button class="button delete" @click="deleteItem">
           <i class="fa-solid fa-trash"></i>
           <p>Eliminar</p>
         </button>
-        <button class="button"   @click="editItem">Modificar</button>
+
+        <button class="button"   @click="editItem">
+          <i class="fa-regular fa-pen-to-square"></i>
+          <p>Modificar</p>
+        </button>
       </div>
     </div>
   </template>
@@ -24,6 +29,17 @@
     methods: {
       toggleMenu() {
         this.isOpen = !this.isOpen;
+        if (this.isOpen) { 
+          document.addEventListener('click', this.handleClickOutside); 
+        } else { 
+          document.removeEventListener('click', this.handleClickOutside); 
+        }
+      },
+      handleClickOutside(event) { 
+        if (!this.$el.contains(event.target)) {
+          this.isOpen = false; 
+          document.removeEventListener('click', this.handleClickOutside); 
+        } 
       },
       deleteItem() {
         this.$emit('delete');
@@ -33,6 +49,9 @@
         this.$emit('edit');
         this.toggleMenu();
       },
+    },
+    beforeDestroy() { 
+      document.removeEventListener('click', this.handleClickOutside); 
     },
   };
   </script>
@@ -71,16 +90,6 @@
     cursor: pointer;
     gap:10px;
   }
-
-  /*.menu-options button[data-v-7cb3d831] {
-    display: flex;
-    width: 100%;
-    background: none;
-    border: none;
-    text-align: left;
-    cursor: pointer;
-    gap:7px;
-  }*/
   .button{
     color:#ccc;
   }
@@ -90,6 +99,10 @@
   .menu-options button[data-v-7cb3d831]:hover{
     border-radius: 10px;
     background-color: #080808;
+  }
+  p{
+    position: relative;
+    bottom:px;
   }
   </style>
   

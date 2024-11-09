@@ -50,7 +50,6 @@
                 @close="closeEditModal" 
                 @save="savePost" 
               />
-
             </div>
             <hr class="separator">
         </li>
