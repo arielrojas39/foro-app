@@ -1,8 +1,11 @@
 <template>
-    <div class="overflow-menu">
+    <div class="overflow-menu" @click.stop>
       <button @click="toggleMenu" class="menu-icon">⋮</button>
       <div v-if="isOpen" class="menu-options">
-        <button class="button" @click="deleteItem">Eliminar</button>
+        <button class="button delete" @click="deleteItem">
+          <i class="fa-solid fa-trash"></i>
+          <p>Eliminar</p>
+        </button>
         <button class="button"   @click="editItem">Modificar</button>
       </div>
     </div>
@@ -49,28 +52,44 @@
   }
   
   .menu-options {
-    padding:10px;
     position: absolute;
     right: 0;
     background: black;
     color:#ccc;
-    border: 1px solid #ccc;
-    box-shadow: 0px 0px 5px  2.5px rgba(255, 255, 255, 0.564);
+    box-shadow: 0px 0px 5px  2.5px rgba(173, 173, 173, 0.564);
     z-index: 1000;
     border-radius: 10px;
   }
   
   .menu-options button {
-    display: block;
+    display: flex;
     width: 100%;
     background: none;
     border: none;
-    padding: 10px;
+    padding: 20px 20px;
     text-align: left;
     cursor: pointer;
+    gap:10px;
   }
+
+  /*.menu-options button[data-v-7cb3d831] {
+    display: flex;
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    gap:7px;
+  }*/
   .button{
     color:#ccc;
+  }
+  .delete{
+    color:red;
+  }
+  .menu-options button[data-v-7cb3d831]:hover{
+    border-radius: 10px;
+    background-color: #080808;
   }
   </style>
   

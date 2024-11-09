@@ -23,14 +23,20 @@ export default new Vuex.Store({
     setUser(state, user) {
       state.user = user
     },
+    addPost(state, post) {
+      state.posts.push(post);
+    },
     setPosts(state, post){
       state.posts = post;
     },
     removePost(state, postId){
       state.posts = state.posts.filter(post => post.id !== postId)
     },
-    addPost(state, post) {
-      state.posts.push(post);
+    updatePost(state, updatedPost) {
+      const index = state.posts.findIndex(post => post.id === updatedPost.id); 
+      if (index !== -1) {
+        Vue.set(state.posts, index, updatedPost); 
+      }
     },
     setError(state, error) {
       state.error = error
@@ -131,8 +137,12 @@ export default new Vuex.Store({
     async deletePost({ commit }, postId){
       await db.collection('posts').doc(postId).delete();
       commit('removePost', postId)
-    }
-  },
+    },
+    async updatePost({ commit }, updatedPost) { 
+      await db.collection('posts').doc(updatedPost.id).update(updatedPost); 
+      commit('updatePost', updatedPost);
+    },
+  }
 })
 
 
