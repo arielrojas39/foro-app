@@ -1,6 +1,6 @@
 <template>
-    <div v-if="isVisible" class="modal-overlay">
-      <div class="modal-content">
+    <div v-if="isVisible" class="modal-overlay" @click.stop>
+      <div class="modal-content" @click.stop>
         <button class="button-cancel" type="button" @click="closeModal">x</button>
         <div class="x"> 
         <form @submit.prevent="saveChanges" class="wrapper-content">
@@ -44,9 +44,29 @@
       },
       closeModal() {
         this.$emit('close');
+        document.removeEventListener('click', this.handleClickOutside); 
+      },
+      handleClickOutside(event) {
+        if (!this.$el.contains(event.target)) {
+          this.closeModal(); 
+        } 
       },
     },
-  };
+    watch: { 
+      isVisible(val) { 
+        if (val) { 
+          this.$nextTick(() => { d
+            document.addEventListener('click', this.handleClickOutside); 
+          });
+        } else { 
+          document.removeEventListener('click', this.handleClickOutside); 
+        } 
+      } 
+    }, 
+    beforeDestroy() { 
+      document.removeEventListener('click', this.handleClickOutside); 
+    },
+  }
   </script>
   
   <style scoped>
@@ -100,7 +120,7 @@
     width: 100%;
   }
   .x{
-    padding:20px;
+    padding:0px 20px 20px 20px;
   }
   img{
     width: 40px;

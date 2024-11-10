@@ -135,12 +135,20 @@ export default new Vuex.Store({
       });
     },
     async deletePost({ commit }, postId){
-      await db.collection('posts').doc(postId).delete();
-      commit('removePost', postId)
+      try{
+        await db.collection('posts').doc(postId).delete();
+        commit('removePost', postId)
+      }catch(error){
+        commit('setError',error.message)
+      }
     },
     async updatePost({ commit }, updatedPost) { 
-      await db.collection('posts').doc(updatedPost.id).update(updatedPost); 
-      commit('updatePost', updatedPost);
+      try{
+        await db.collection('posts').doc(updatedPost.id).update(updatedPost); 
+        commit('updatePost', updatedPost);
+      }catch(error){
+        commit('setError', error.message);
+      }
     },
   }
 })

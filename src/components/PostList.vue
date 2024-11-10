@@ -1,6 +1,6 @@
 <template>
-    <div class="container">
-      
+    <div class="container" @click="handleClickOutside">
+
       <ul class="wrapper-list">
         <li v-for="post in posts" :key="post.id"> 
             <div class="post">
@@ -36,10 +36,9 @@
                   </div>
                 </div>
               </div>
-                  
 
               <div class="wrapper-overflow">
-                <OverflowMenu @delete="deletePost(post.id)" @edit="openEditModal(post)"/>
+                <OverflowMenu @delete="showDeleteConfirmation(post.id)" @edit="openEditModal(post)" />
               </div>
 
               <EditPostModal 
@@ -49,7 +48,18 @@
                 :isVisible="isEditModalVisible" 
                 @close="closeEditModal" 
                 @save="savePost" 
+                ref="editModal"
               />
+
+              <ConfirmDeleteModal
+                :key="post.id"
+                v-if="isDeleteModalVisible" 
+                :isVisible="isDeleteModalVisible" 
+                @confirm="deletePost" 
+                @cancel="closeDeleteModal" 
+                ref="confirmModal"
+              />
+
             </div>
             <hr class="separator">
         </li>
@@ -63,19 +73,23 @@
   import Coment from './Coment.vue';
   import OverflowMenu from './OverflowMenu.vue';
   import EditPostModal from './EditPostModal.vue';
+  import ConfirmDeleteModal from './ConfirmDeleteModal.vue';
 
 
   export default {
-    data() 
-    { return { 
+    data() { 
+      return { 
         isEditModalVisible: false, 
         postToEdit: null, 
+        isDeleteModalVisible:false, 
+        postToDelete: null,
       }; 
     },
     components:{
       Coment,
       OverflowMenu,
       EditPostModal,
+      ConfirmDeleteModal,
     },
     computed:{
         ...mapState(['posts'])
@@ -85,22 +99,39 @@
     },
     methods: {
         ...mapActions(['fetchPosts']),
-        async deletePost(postId) {
+
+        handleClickOutside(event) {           
+          if (this.isEditModalVisible && !this.$refs.editModal.$el.contains(event.target)) { 
+            this.closeEditModal(); 
+          } if (this.isDeleteModalVisible && this.$refs.confirmModal && !this.$refs.confirmModal.$el.contains(event.target)) { 
+            this.closeDeleteModal(); 
+          } 
+        },
+
+        async deletePost() {
           try{
-            await this.$store.dispatch('deletePost', postId);
+            await this.$store.dispatch('deletePost', this.postToDelete);
             console.log('el post ha sido eliminado');
+            this.closeDeleteModal();
           }catch(error){
             console.error('error eliminando el post: ',error);
           }
         },
 
-        openEditModal(post) { this.postToEdit = { ...post }; // Crear una copia del post para editar 
+        openEditModal(post) {
+          this.postToEdit = { ...post }; 
           this.isEditModalVisible = true; 
-        },
+          this.$nextTick(()=>{
+            document.addEventListener('click', this.handleClickOutside);
+          })
+        }, 
+
         closeEditModal() { 
           this.isEditModalVisible = false; 
           this.postToEdit = null; 
-        }, 
+          document.removeEventListener('click',this.handleClickOutside)
+        },
+
         async savePost(updatedPost) {
            try { 
             await this.$store.dispatch('updatePost', updatedPost); 
@@ -108,10 +139,21 @@
             this.closeEditModal(); 
           } catch (error) {
             console.error('Error actualizando el post:', error); 
-          } 
+          }
         },
 
-    }
+        showDeleteConfirmation(postId) { 
+          this.postToDelete = postId; 
+          this.isDeleteModalVisible = true; 
+          document.addEventListener('click', this.handleClickOutside);
+        }, 
+
+        closeDeleteModal() { 
+          this.isDeleteModalVisible = false; 
+          this.postToDelete = null; 
+          document.removeEventListener('click', this.handleClickOutside);
+        },
+      },
   };
   </script>
   
@@ -156,7 +198,7 @@
     position: relative;
     right: 10px;
     cursor: pointer;
-    transition: background-color 0.5s ease, color 2s ease;
+    transition: background-color 0.2s linear, color 5s ease;
   }
   .icon-button:hover{
     background-color: #15364b6f;
