@@ -65,7 +65,13 @@
         </div>
       </div>
 
-      <div class="void"></div>
+      <div class="void">
+        <div class="wrapper-info">
+        
+        
+        </div>
+        <div class="wrapper-info"></div>
+      </div>
 
   </div>
 </template>
@@ -144,7 +150,7 @@ export default {
 <style scoped>
  .dashboard-container {
     display: grid;
-    grid-template-columns: 0.5fr 2fr 1.5fr;
+    grid-template-columns: 0.5fr 1.85fr 1.5fr;
     grid-template-rows: 1fr;
     grid-auto-columns: 1fr;
     grid-template-areas:
@@ -167,6 +173,18 @@ export default {
   
   .void { 
     grid-area: void; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap:50px;
+  }
+  .wrapper-info{
+    width: 400px;
+    height: 250px;
+    background-color: black;
+    border: 1px solid #ccc;
+    border-radius: 30px;
   }
   
   .main { 

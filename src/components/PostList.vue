@@ -15,7 +15,7 @@
 
                   <div class="wrapper-user-data">
                   
-                    <div class="user-data">
+                    <div class="user-data">                                       
                       <p class="full-name">{{ post.user.firstName }} {{ post.user.lastName }}</p> 
                       <p class="email">{{ post.user.email }}</p> 
                       <p>{{ post.date }}</p> 
@@ -38,7 +38,11 @@
               </div>
 
               <div class="wrapper-overflow">
-                <OverflowMenu @delete="showDeleteConfirmation(post.id)" @edit="openEditModal(post)" />
+                <OverflowMenu 
+                  v-if="post.user.idUser === loggedInUserId"
+                  @delete="showDeleteConfirmation(post.id)" 
+                  @edit="openEditModal(post)" 
+                />
               </div>
 
               <EditPostModal 
@@ -92,7 +96,7 @@
       ConfirmDeleteModal,
     },
     computed:{
-        ...mapState(['posts'])
+        ...mapState(['posts', 'loggedInUserId'])
     },
     created() {
       this.fetchPosts();
@@ -107,7 +111,7 @@
             this.closeDeleteModal(); 
           } 
         },
-
+        
         async deletePost() {
           try{
             await this.$store.dispatch('deletePost', this.postToDelete);

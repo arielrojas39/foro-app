@@ -10,6 +10,7 @@ export default new Vuex.Store({
     user: null,
     error: null,
     posts: [],
+    loggedInUserId: null,
   },
 
   getters: {
@@ -17,11 +18,13 @@ export default new Vuex.Store({
     user: state => state.user,
     error: state => state.error,
     posts: state => state.posts,
+    loggedInUserId: state => state.loggedInUserId,
   },
 
   mutations: {
     setUser(state, user) {
-      state.user = user
+      state.user = user;
+      state.loggedInUserId = user ? user.uid : null;
     },
     addPost(state, post) {
       state.posts.push(post);
@@ -29,6 +32,9 @@ export default new Vuex.Store({
     setPosts(state, post){
       state.posts = post;
     },
+    // setLogedInUserId(state, userId){
+    //   state.loggedInUserId = userId;
+    // },
     removePost(state, postId){
       state.posts = state.posts.filter(post => post.id !== postId)
     },
@@ -41,9 +47,7 @@ export default new Vuex.Store({
     setError(state, error) {
       state.error = error
     },
-    // setError(state, error) {
-    //   state.error = error;
-    // },
+
   },
 
   actions: {
@@ -98,7 +102,8 @@ export default new Vuex.Store({
           idUser: user.uid,
           createdAt: new Date().toISOString() // Guarda la fecha de creación
         };
-  
+        
+        
         const docRef = await db.collection('posts').add(newPost);
   
         
@@ -115,18 +120,18 @@ export default new Vuex.Store({
           const userId = postData.idUser;
           const userDoc = await db.collection('users').doc(userId).get();
           const userData = userDoc.data();
-
+          
           postsArray.push({
             id: doc.id,
             ...postData,
             user:{
+              idUser: userId,
               firstName: userData.firstName,
               lastName: userData.lastName,
               email: userData.email,
               photoURL: userData.photoURL
             }
           });
-        
         }
         commit('setPosts', postsArray);
         console.log('Guardamos la informacion en la base de datos!!')
@@ -142,6 +147,7 @@ export default new Vuex.Store({
         commit('setError',error.message)
       }
     },
+
     async updatePost({ commit }, updatedPost) { 
       try{
         await db.collection('posts').doc(updatedPost.id).update(updatedPost); 
@@ -150,6 +156,16 @@ export default new Vuex.Store({
         commit('setError', error.message);
       }
     },
+
+    // async getUserId({ commit }) { 
+    //     auth.onAuthStateChanged(user => { 
+    //       if (user) { 
+    //         commit('setLoggedInUserId', user.uid); 
+    //       } else { 
+    //         commit('setLoggedInUserId', null); 
+    //       } 
+    //     }); 
+    // },
   }
 })
 

@@ -1,7 +1,9 @@
 <template>
     <div class="overflow-menu" @click.stop>
-      <button @click="toggleMenu" class="menu-icon">⋮</button>
-      <div v-if="isOpen" class="menu-options">
+      <button @click="toggleMenu" class="menu-icon">
+        <i id="menu-icon" class="fa-solid fa-ellipsis-vertical"></i>
+      </button>
+      <div v-if="isOpen" id="menu" class="menu-options">
 
         <button class="button delete" @click="deleteItem">
           <i class="fa-solid fa-trash"></i>
@@ -62,13 +64,7 @@
     display: inline-block;
   }
   
-  .menu-icon {
-    background-color: transparent;
-    color: white;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-  }
+  
   
   .menu-options {
     position: absolute;
@@ -78,6 +74,9 @@
     box-shadow: 0px 0px 5px  2.5px rgba(173, 173, 173, 0.564);
     z-index: 1000;
     border-radius: 10px;
+  }
+  button{
+    color:#ccc;
   }
   
   .menu-options button {
@@ -90,13 +89,32 @@
     cursor: pointer;
     gap:10px;
   }
-  .button{
-    color:#ccc;
+
+  .menu-icon{
+    width: 30px;
+    height: 30px;
+    position: relative;
+    bottom:1px;
+    background-color: transparent;
+    color: #ccc;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 50px;
+    transition: background-color 0.2s linear, color 5s ease;
   }
+  
+  .menu-icon:hover{
+    background-color: #15364b6f;
+    #menu-icon{
+      color:#1d99ed;
+    }
+  }
+
   .delete{
     color:red;
   }
-  .menu-options button[data-v-7cb3d831]:hover{
+  .menu-options button:hover{
     border-radius: 10px;
     background-color: #080808;
   }

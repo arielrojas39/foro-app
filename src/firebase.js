@@ -3,6 +3,7 @@ import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/storage'
 
+
 //definimos las credenciales
 
 const firebaseConfig = {
@@ -15,6 +16,9 @@ const firebaseConfig = {
   };
 
 firebase.initializeApp(firebaseConfig)
+
+
+
 
 const db = firebase.firestore();
 const auth = firebase.auth();
