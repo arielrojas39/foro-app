@@ -69,8 +69,9 @@
               />
 
               <Comment
+                :userData="userData"
                 :isVisible="isPostModalVisible" 
-                :post="selectedPost" 
+                :post="selectedPost"                 
                 @close="closePostModal" 
               />
 
@@ -100,6 +101,12 @@
         isPostModalVisible: false, 
         selectedPost: null,
       }; 
+    },
+    props: {
+      userData: {
+        type:Object,
+        required: true,
+      }
     },
     components:{
       OverflowMenu,

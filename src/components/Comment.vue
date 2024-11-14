@@ -17,11 +17,16 @@
               </div>
               <p class="content">{{ post.content }}</p>
             </div>
+
           </div>
           
 
           <div class="y">
-            <textarea v-model="comment" placeholder="Escribe tu comentario"></textarea>
+            <div class="image">
+              <img :src="userData.photoURL">          
+            </div>
+          
+            <textarea placeholder="Escribe tu comentario"></textarea>
             <!-- <button @click="submitComment">Enviar Comentario</button> -->
           </div>
 
@@ -38,6 +43,9 @@
         default: false
       },
       post: {
+        type: Object,       
+      },
+      userData: {
         type: Object,
         required: true
       }
@@ -83,19 +91,28 @@
   .container-user-post{
     display: flex;
     flex-direction: column;
-    gap:10px;
+    gap:50px;
   }
-  .container-user{
+  .container-user{    
     display: flex;
     flex-direction: column;
     text-align: start;
     gap:5px;
   }
+
   .post-user{
+    padding: 10px;
     display: flex;
     flex-direction: row;
     gap:5px;
   }
+
+  .y{    
+    display: flex;
+    flex-direction: row;
+    gap:5px;
+  }
+
   .image{
     display: flex;
     flex-direction: column;

@@ -61,15 +61,12 @@
         </section>
 
         <div class="post-list">
-          <PostList/>
+          <PostList :userData="userData"/>
         </div>
       </div>
 
       <div class="void">
-        <div class="wrapper-info">
-        
-        
-        </div>
+        <div class="wrapper-info"></div>
         <div class="wrapper-info"></div>
       </div>
 
