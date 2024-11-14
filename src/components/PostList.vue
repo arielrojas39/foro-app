@@ -27,9 +27,13 @@
 
                   <div class="wrapper-interaction">
 
-                      <button class="icon-button">
-                        <i id="coment-icon" class="fa-regular fa-comment"></i>
-                      </button>
+                      
+                    <button @click="openPostModal(post)" class="comment-button">
+                      <i id="comment-icon" class="fa-regular fa-comment"></i> 
+                    </button>
+
+                  <!-- <Coment :post="post"/> -->
+                      
                     
                     <!-- <i id="retweet-icon" class="fa-solid fa-retweet"></i>
                     <i id="heart-icon" class="fa-regular fa-heart"></i> -->
@@ -64,6 +68,12 @@
                 ref="confirmModal"
               />
 
+              <Comment
+                :isVisible="isPostModalVisible" 
+                :post="selectedPost" 
+                @close="closePostModal" 
+              />
+
             </div>
             <hr class="separator">
         </li>
@@ -74,11 +84,11 @@
   <script>
   
   import { mapState, mapActions } from 'vuex';
-  import Coment from './Coment.vue';
+  
   import OverflowMenu from './OverflowMenu.vue';
   import EditPostModal from './EditPostModal.vue';
   import ConfirmDeleteModal from './ConfirmDeleteModal.vue';
-
+  import Comment from './Comment.vue';
 
   export default {
     data() { 
@@ -87,13 +97,15 @@
         postToEdit: null, 
         isDeleteModalVisible:false, 
         postToDelete: null,
+        isPostModalVisible: false, 
+        selectedPost: null,
       }; 
     },
     components:{
-      Coment,
       OverflowMenu,
       EditPostModal,
       ConfirmDeleteModal,
+      Comment,
     },
     computed:{
         ...mapState(['posts', 'loggedInUserId'])
@@ -157,6 +169,16 @@
           this.postToDelete = null; 
           document.removeEventListener('click', this.handleClickOutside);
         },
+
+        openPostModal(post) { 
+          this.selectedPost = post; 
+          this.isPostModalVisible = true; 
+        }, 
+        closePostModal() { 
+          this.isPostModalVisible = false; 
+          this.selectedPost = null; 
+        },
+
       },
   };
   </script>
@@ -167,10 +189,9 @@
     overflow-y: auto; 
     border:1px solid #8887878f;
     border-top: none;
-    border-bottom: none;
-    /* Oculta la barra de desplazamiento */ 
-    scrollbar-width: none; /* Firefox */ 
-    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    border-bottom: none;    
+    scrollbar-width: none;  
+    -ms-overflow-style: none; 
   }
   .wrapper-list{
     display: flex;
@@ -181,19 +202,13 @@
     display: flex;
     flex-direction: column;
     gap:15px;
+    flex-wrap: wrap;
   }
   img{
     width: 40px;
     height: 40px;
     border-radius: 50%;
   }
-  #coment-icon, #heart-icon, #retweet-icon{
-    font-size: 15px;
-    color:#70757a;
-    position: relative;
-    top:1px;
-  }
-  
   .icon-button{
     padding: 10px;
     border: none;
@@ -204,12 +219,8 @@
     cursor: pointer;
     transition: background-color 0.2s linear, color 5s ease;
   }
-  .icon-button:hover{
-    background-color: #15364b6f;
-    #coment-icon{
-      color:#1d99ed;
-    }
-  }
+  
+ 
   .post{
     display: flex;
     flex-direction: row;
@@ -242,6 +253,52 @@
     justify-content: sart;
     
   }
+  .comment-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+  }
+  .fa-regular.fa-comment{
+    position:relative;
+    bottom:1px;
+    font-size:17px;
+    color:#ccc;
+  }
+  button.comment-button{
+    width: 35px;
+    height: 35px;
+    color:#ccc;
+    border: none;
+    border-radius: 50%;
+    background-color: transparent;
+    position: relative;
+    right: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 1s linear;
+  }
+  button.comment-button:hover{
+    background-color: #15364b6f;
+    .fa-regular.fa-comment{
+      color:#1d99ed;
+    }
+  }
+  /*
+  button.coment-button{
+    color:#ccc;
+    padding: 10px;
+    border: none;
+    border-radius: 50%;
+    background-color: black;
+    position: relative;
+    right: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s linear, color 5s ease;
+  }
+  button.coment-button:hover{
+    background-color: #15364b6f;
+  }
+    */
   p{
     font-size: 16px;
   }

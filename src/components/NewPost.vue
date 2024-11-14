@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import Coment from './Coment.vue';
+
 import ButtonComponent from './Button.vue';
 import { mapActions } from 'vuex';
 
@@ -39,7 +39,6 @@ export default {
   },
 
   components:{
-    Coment,
     ButtonComponent,
   },
 
