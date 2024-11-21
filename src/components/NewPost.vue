@@ -90,6 +90,7 @@ export default {
   box-sizing: border-box;
   resize: none; 
   overflow: hidden; 
+  font-size:1.2rem;
 }
 
 hr.full-width{
@@ -117,7 +118,7 @@ img.profile-image{
   flex-direction: row;
   justify-content: start;
   align-items: center;
-  gap: 30px;
+  gap: 20px;
   width: 100%;
   margin-top:20px;
 }
