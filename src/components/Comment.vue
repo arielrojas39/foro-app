@@ -33,12 +33,12 @@
           <div class="user-comment">
             <img :src="userData.photoURL">                      
             <div class="container-input">
-              <textarea class="input" placeholder="Escribe tu comentario"></textarea>
+              <textarea v-model="newCommentContent" class="input" placeholder="Escribe tu comentario"></textarea>
             </div>
-          </div>
+          </div>  
 
           <div class="container-button">
-            <button>Responder</button>
+            <button @click="addNewComment">Responder</button>
           </div>
         </div>
 
@@ -48,7 +48,15 @@
 </template>
 
 <script>
+
+import { mapActions } from 'vuex';
+
 export default {
+  data(){
+    return{
+      newCommentContent: ''
+    }
+  },
   props: {
     isVisible: {
       type: Boolean,
@@ -63,9 +71,26 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['addComment']),
     closeModal() {
       this.$emit('close');
-    }
+    },
+    async addNewComment() { 
+      if (this.newCommentContent.trim() === '') { 
+        return; 
+      } 
+      try { 
+        await this.addComment({ 
+          postId: this.post.id, 
+          commentContent: this.newCommentContent, 
+          author: this.userData.email 
+        }); 
+        this.newCommentContent = ''; 
+        this.closeModal(); 
+      } catch (error) { 
+        console.error('Error agregando el comentario:', error); 
+      } 
+    },
   }
 };
 </script>

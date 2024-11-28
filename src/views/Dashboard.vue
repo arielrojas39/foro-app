@@ -53,17 +53,12 @@
 
       </div>
 
-      <div class="main">
-
-        <section class="threads-container">
-          <!-- <img :src="userData.photoURL" class="profile-image" /> -->    
-          <NewPost :userData="userData"/>      
-        </section>
-
-        <div class="post-list">
-          <PostList :userData="userData"/>
-        </div>
+      <div class="main">        
+          <NewPost :userData="userData" v-if="!selectedPost" class="threads-container"/>      
+          <PostList :userData="userData" v-if="!selectedPost" @postSelected="selectPost" class="post-list"/>
+          <PostDetails v-else :post="selectedPost" @back="clearSelectedPost" />              
       </div>
+
 
       <div class="void">
         <div class="wrapper-info"></div>
@@ -74,10 +69,11 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 import {db} from '../firebase'
 import NewPost from "../components/NewPost.vue";
 import PostList from "@/components/PostList.vue";
+import PostDetails from "@/components/PostDetails.vue"
 
 export default {
   name: "Dashboard",
@@ -90,15 +86,17 @@ export default {
   },
   components:{
     NewPost,
-    PostList
+    PostList, 
+    PostDetails,
   },
 
   computed: {
     ...mapGetters(["user"]),
+    ...mapState(['selectedPost']),
   },
 
   methods: {
-    ...mapActions(["logout"]),
+    ...mapActions(['logout', 'selectPost', 'clearSelectedPost']),
 
     async manejarLogout() {
       try {

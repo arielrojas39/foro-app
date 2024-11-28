@@ -2,7 +2,7 @@
     <div class="container" @click="handleClickOutside">
 
       <ul class="wrapper-list">
-        <li v-for="post in posts" :key="post.id"> 
+        <li v-for="post in posts" :key="post.id" @click="emitPostSelected(post)"> 
             <div class="post">
 
               <div class="wrapper-info">
@@ -121,7 +121,7 @@
       this.fetchPosts();
     },
     methods: {
-        ...mapActions(['fetchPosts']),
+        ...mapActions(['fetchPosts', 'selectPost']),
 
         handleClickOutside(event) {           
           if (this.isEditModalVisible && !this.$refs.editModal.$el.contains(event.target)) { 
@@ -186,6 +186,11 @@
           this.selectedPost = null; 
         },
 
+        emitPostSelected(post) { 
+          this.selectPost(post); 
+          this.$emit('postSelected', post); 
+        },
+
       },
   };
   </script>
@@ -234,6 +239,7 @@
     justify-content: space-between;
     gap:10px;
     margin:15px 15px 5px 15px;
+    cursor: pointer;
   }
   .wrapper-info{
     width: 100%;

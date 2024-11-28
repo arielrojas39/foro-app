@@ -93,6 +93,7 @@ export default {
   font-size:1.2rem;
 }
 
+
 hr.full-width{
   width: 100%;
   border: 1px solid #8887878f; /* Podés ajustar el estilo de la línea aquí */

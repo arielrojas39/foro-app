@@ -11,6 +11,7 @@ export default new Vuex.Store({
     error: null,
     posts: [],
     loggedInUserId: null,
+    selectedPost: null, 
   },
 
   getters: {
@@ -19,6 +20,7 @@ export default new Vuex.Store({
     error: state => state.error,
     posts: state => state.posts,
     loggedInUserId: state => state.loggedInUserId,
+    selectedPost: state => state.selectedPost,
   },
 
   mutations: {
@@ -26,28 +28,37 @@ export default new Vuex.Store({
       state.user = user;
       state.loggedInUserId = user ? user.uid : null;
     },
+
     addPost(state, post) {
       state.posts.push(post);
     },
+
     setPosts(state, post){
       state.posts = post;
     },
-    // setLogedInUserId(state, userId){
-    //   state.loggedInUserId = userId;
-    // },
+
     removePost(state, postId){
       state.posts = state.posts.filter(post => post.id !== postId)
     },
+
     updatePost(state, updatedPost) {
       const index = state.posts.findIndex(post => post.id === updatedPost.id); 
       if (index !== -1) {
         Vue.set(state.posts, index, updatedPost); 
       }
     },
+
+    setSelectedPost(state, post) { 
+      state.selectedPost = post; 
+    },
+     
+    clearSelectedPost(state) { 
+      state.selectedPost = null; 
+    },
+
     setError(state, error) {
       state.error = error
     },
-
   },
 
   actions: {
@@ -112,6 +123,7 @@ export default new Vuex.Store({
         commit('setError', error.message);
       }
     },
+
     async fetchPosts({ commit }){
       db.collection('posts').onSnapshot( async snapshot =>{
         const postsArray = [];
@@ -139,6 +151,7 @@ export default new Vuex.Store({
         commit('setError',error.message);
       });
     },
+
     async deletePost({ commit }, postId){
       try{
         await db.collection('posts').doc(postId).delete();
@@ -157,15 +170,29 @@ export default new Vuex.Store({
       }
     },
 
-    // async getUserId({ commit }) { 
-    //     auth.onAuthStateChanged(user => { 
-    //       if (user) { 
-    //         commit('setLoggedInUserId', user.uid); 
-    //       } else { 
-    //         commit('setLoggedInUserId', null); 
-    //       } 
-    //     }); 
-    // },
+    async addComment({ commit }, { postId, commentContent, author }) { 
+      try { 
+        const newComment = { 
+          postId, 
+          content: commentContent, 
+          author
+        }
+
+        await db.collection('comments').add(newComment); 
+      } catch (error) { 
+        commit('setError', error.message); 
+        throw error; 
+      } 
+    }, 
+
+    selectPost({ commit }, post) { // Nueva acción para seleccionar un post 
+      commit('setSelectedPost', post); 
+    }, 
+
+    clearSelectedPost({ commit }) { // Nueva acción para limpiar el post seleccionado 
+      commit('clearSelectedPost');
+    },
+
   }
 })
 
