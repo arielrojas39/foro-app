@@ -32,7 +32,7 @@
                       <i id="comment-icon" class="fa-regular fa-comment"></i> 
                     </button>
 
-                  <!-- <Coment :post="post"/> -->
+                  
                       
                     
                     <!-- <i id="retweet-icon" class="fa-solid fa-retweet"></i>

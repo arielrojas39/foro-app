@@ -44,11 +44,11 @@
       <div class="navegation">
 
         <div class="home-icon">
-          <img src="../img/icons/home.png" alt="">
+          <i class="fa-solid fa-house"></i>
         </div>
 
         <div class="profile-icon">
-          <img src="../img/icons/profile.png" alt="">
+          <i class="fa-solid fa-user"></i>
         </div>
 
       </div>
@@ -197,6 +197,17 @@ export default {
   img{
     width: 50px;
     height: 50px;
+  }
+
+  .fa-solid.fa-house, .fa-solid.fa-user{
+    color: #fff;
+    font-size:26px;
+    margin:10px;
+    cursor: pointer;
+  }
+  .fa-solid.fa-user{
+    position: relative;
+    right: 4px;;
   }
 
   h1 {
